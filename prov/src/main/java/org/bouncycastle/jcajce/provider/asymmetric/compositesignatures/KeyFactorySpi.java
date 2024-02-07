@@ -46,12 +46,14 @@ public class KeyFactorySpi extends BaseKeyFactorySpi
     private static final AlgorithmIdentifier dilithium3Identifier = new AlgorithmIdentifier(BCObjectIdentifiers.dilithium3);
     private static final AlgorithmIdentifier dilithium5Identifier = new AlgorithmIdentifier(BCObjectIdentifiers.dilithium5);
     private static final AlgorithmIdentifier falcon512Identifier = new AlgorithmIdentifier(BCObjectIdentifiers.falcon_512);
+    private static final AlgorithmIdentifier falcon1024Identifier = new AlgorithmIdentifier(BCObjectIdentifiers.falcon_1024);
     private static final AlgorithmIdentifier ed25519Identifier = new AlgorithmIdentifier(EdECObjectIdentifiers.id_Ed25519);
     private static final AlgorithmIdentifier ecdsaP256Identifier = new AlgorithmIdentifier(X9ObjectIdentifiers.id_ecPublicKey, new X962Parameters(SECObjectIdentifiers.secp256r1));
     private static final AlgorithmIdentifier ecdsaBrainpoolP256r1Identifier = new AlgorithmIdentifier(X9ObjectIdentifiers.id_ecPublicKey, new X962Parameters(TeleTrusTObjectIdentifiers.brainpoolP256r1));
     private static final AlgorithmIdentifier rsaIdentifier = new AlgorithmIdentifier(PKCSObjectIdentifiers.rsaEncryption);
     private static final AlgorithmIdentifier ed448Identifier = new AlgorithmIdentifier(EdECObjectIdentifiers.id_Ed448);
     private static final AlgorithmIdentifier ecdsaP384Identifier = new AlgorithmIdentifier(X9ObjectIdentifiers.id_ecPublicKey, new X962Parameters(SECObjectIdentifiers.secp384r1));
+    private static final AlgorithmIdentifier ecdsaP521Identifier = new AlgorithmIdentifier(X9ObjectIdentifiers.id_ecPublicKey, new X962Parameters(SECObjectIdentifiers.secp521r1));
     private static final AlgorithmIdentifier ecdsaBrainpoolP384r1Identifier = new AlgorithmIdentifier(X9ObjectIdentifiers.id_ecPublicKey, new X962Parameters(TeleTrusTObjectIdentifiers.brainpoolP384r1));
 
     protected Key engineTranslateKey(Key key) throws InvalidKeyException
@@ -195,6 +197,7 @@ public class KeyFactorySpi extends BaseKeyFactorySpi
             case MLDSA65_ECDSA_brainpoolP256r1_SHA256:
             case MLDSA87_ECDSA_P384_SHA384:
             case MLDSA87_ECDSA_brainpoolP384r1_SHA384:
+            case MLDSA87_ECDSA_P521_SHA512:_SHA384:
                 algorithmNames.add("Dilithium");
                 algorithmNames.add("ECDSA");
                 break;
@@ -204,6 +207,7 @@ public class KeyFactorySpi extends BaseKeyFactorySpi
                 break;
             case Falcon512_ECDSA_P256_SHA256:
             case Falcon512_ECDSA_brainpoolP256r1_SHA256:
+            case Falcon1024_ECDSA_P521_SHA512:
                 algorithmNames.add("Falcon");
                 algorithmNames.add("ECDSA");
                 break;
@@ -290,6 +294,14 @@ public class KeyFactorySpi extends BaseKeyFactorySpi
             case Falcon512_ECDSA_brainpoolP256r1_SHA256:
                 keyInfos[0] = new SubjectPublicKeyInfo(falcon512Identifier, subjectPublicKeys[0]);
                 keyInfos[1] = new SubjectPublicKeyInfo(ecdsaBrainpoolP256r1Identifier, subjectPublicKeys[1]);
+                break;
+            case Falcon1024_ECDSA_P521_SHA512:
+                keyInfos[0] = new SubjectPublicKeyInfo(falcon1024Identifier, subjectPublicKeys[0]);
+                keyInfos[1] = new SubjectPublicKeyInfo(ecdsaP521Identifier, subjectPublicKeys[1]);
+                break;
+            case MLDSA87_ECDSA_P521_SHA512:
+                keyInfos[0] = new SubjectPublicKeyInfo(dilithium5Identifier, subjectPublicKeys[0]);
+                keyInfos[1] = new SubjectPublicKeyInfo(ecdsaP521Identifier, subjectPublicKeys[1]);
                 break;
             default:
                 throw new IllegalArgumentException("Cannot create key specs. Unsupported algorithm identifier.");

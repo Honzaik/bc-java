@@ -186,5 +186,7 @@ public interface MiscObjectIdentifiers
     ASN1ObjectIdentifier id_Falcon512_ECDSA_P256_SHA256 = id_composite_signatures.branch("14");
     ASN1ObjectIdentifier id_Falcon512_ECDSA_brainpoolP256r1_SHA256 = id_composite_signatures.branch("15");
     ASN1ObjectIdentifier id_Falcon512_Ed25519_SHA512 = id_composite_signatures.branch("16");
+    ASN1ObjectIdentifier id_Falcon1024_ECDSA_P521_SHA512 = id_composite_signatures.branch("17"); //testing
+    ASN1ObjectIdentifier id_MLDSA87_ECDSA_P521_SHA512 = id_composite_signatures.branch("18"); //testing
     // COMPOSITE SIGNATURES END
 }

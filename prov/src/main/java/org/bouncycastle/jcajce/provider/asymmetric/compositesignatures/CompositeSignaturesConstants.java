@@ -16,14 +16,14 @@ public abstract class CompositeSignaturesConstants
     /**
      * An array of supported identifiers of composite signature schemes.
      */
-    public static final ASN1ObjectIdentifier[] supportedIdentifiers = {MiscObjectIdentifiers.id_MLDSA44_RSA2048_PSS_SHA256, MiscObjectIdentifiers.id_MLDSA44_RSA2048_PKCS15_SHA256, MiscObjectIdentifiers.id_MLDSA44_Ed25519_SHA512, MiscObjectIdentifiers.id_MLDSA44_ECDSA_P256_SHA256, MiscObjectIdentifiers.id_MLDSA44_ECDSA_brainpoolP256r1_SHA256, MiscObjectIdentifiers.id_MLDSA65_RSA3072_PSS_SHA256, MiscObjectIdentifiers.id_MLDSA65_RSA3072_PKCS15_SHA256, MiscObjectIdentifiers.id_MLDSA65_ECDSA_P256_SHA256, MiscObjectIdentifiers.id_MLDSA65_ECDSA_brainpoolP256r1_SHA256, MiscObjectIdentifiers.id_MLDSA65_Ed25519_SHA512, MiscObjectIdentifiers.id_MLDSA87_ECDSA_P384_SHA384, MiscObjectIdentifiers.id_MLDSA87_ECDSA_brainpoolP384r1_SHA384, MiscObjectIdentifiers.id_MLDSA87_Ed448_SHAKE256, MiscObjectIdentifiers.id_Falcon512_ECDSA_P256_SHA256, MiscObjectIdentifiers.id_Falcon512_ECDSA_brainpoolP256r1_SHA256, MiscObjectIdentifiers.id_Falcon512_Ed25519_SHA512,};
+    public static final ASN1ObjectIdentifier[] supportedIdentifiers = {MiscObjectIdentifiers.id_MLDSA44_RSA2048_PSS_SHA256, MiscObjectIdentifiers.id_MLDSA44_RSA2048_PKCS15_SHA256, MiscObjectIdentifiers.id_MLDSA44_Ed25519_SHA512, MiscObjectIdentifiers.id_MLDSA44_ECDSA_P256_SHA256, MiscObjectIdentifiers.id_MLDSA44_ECDSA_brainpoolP256r1_SHA256, MiscObjectIdentifiers.id_MLDSA65_RSA3072_PSS_SHA256, MiscObjectIdentifiers.id_MLDSA65_RSA3072_PKCS15_SHA256, MiscObjectIdentifiers.id_MLDSA65_ECDSA_P256_SHA256, MiscObjectIdentifiers.id_MLDSA65_ECDSA_brainpoolP256r1_SHA256, MiscObjectIdentifiers.id_MLDSA65_Ed25519_SHA512, MiscObjectIdentifiers.id_MLDSA87_ECDSA_P384_SHA384, MiscObjectIdentifiers.id_MLDSA87_ECDSA_brainpoolP384r1_SHA384, MiscObjectIdentifiers.id_MLDSA87_Ed448_SHAKE256, MiscObjectIdentifiers.id_Falcon512_ECDSA_P256_SHA256, MiscObjectIdentifiers.id_Falcon512_ECDSA_brainpoolP256r1_SHA256, MiscObjectIdentifiers.id_Falcon512_Ed25519_SHA512, MiscObjectIdentifiers.id_Falcon1024_ECDSA_P521_SHA512, MiscObjectIdentifiers.id_MLDSA87_ECDSA_P521_SHA512};
 
     /**
      * Enum of supported composited signature schemes. Each one corresponds to a value from supportedIdentifiers.
      */
     public enum CompositeName
     {
-        MLDSA44_RSA2048_PSS_SHA256, MLDSA44_RSA2048_PKCS15_SHA256, MLDSA44_ECDSA_P256_SHA256, MLDSA44_ECDSA_brainpoolP256r1_SHA256, MLDSA44_Ed25519_SHA512, MLDSA65_RSA3072_PSS_SHA256, MLDSA65_RSA3072_PKCS15_SHA256, MLDSA65_ECDSA_brainpoolP256r1_SHA256, MLDSA65_ECDSA_P256_SHA256, MLDSA65_Ed25519_SHA512, MLDSA87_ECDSA_P384_SHA384, MLDSA87_ECDSA_brainpoolP384r1_SHA384, MLDSA87_Ed448_SHAKE256, Falcon512_ECDSA_P256_SHA256, Falcon512_ECDSA_brainpoolP256r1_SHA256, Falcon512_Ed25519_SHA512,
+        MLDSA44_RSA2048_PSS_SHA256, MLDSA44_RSA2048_PKCS15_SHA256, MLDSA44_ECDSA_P256_SHA256, MLDSA44_ECDSA_brainpoolP256r1_SHA256, MLDSA44_Ed25519_SHA512, MLDSA65_RSA3072_PSS_SHA256, MLDSA65_RSA3072_PKCS15_SHA256, MLDSA65_ECDSA_brainpoolP256r1_SHA256, MLDSA65_ECDSA_P256_SHA256, MLDSA65_Ed25519_SHA512, MLDSA87_ECDSA_P384_SHA384, MLDSA87_ECDSA_brainpoolP384r1_SHA384, MLDSA87_Ed448_SHAKE256, Falcon512_ECDSA_P256_SHA256, Falcon512_ECDSA_brainpoolP256r1_SHA256, Falcon512_Ed25519_SHA512, Falcon1024_ECDSA_P521_SHA512, MLDSA87_ECDSA_P521_SHA512
     }
 
     /**
@@ -50,6 +50,8 @@ public abstract class CompositeSignaturesConstants
         compositeNameASN1IdentifierMap.put(CompositeName.Falcon512_ECDSA_P256_SHA256, MiscObjectIdentifiers.id_Falcon512_ECDSA_P256_SHA256);
         compositeNameASN1IdentifierMap.put(CompositeName.Falcon512_ECDSA_brainpoolP256r1_SHA256, MiscObjectIdentifiers.id_Falcon512_ECDSA_brainpoolP256r1_SHA256);
         compositeNameASN1IdentifierMap.put(CompositeName.Falcon512_Ed25519_SHA512, MiscObjectIdentifiers.id_Falcon512_Ed25519_SHA512);
+        compositeNameASN1IdentifierMap.put(CompositeName.Falcon1024_ECDSA_P521_SHA512, MiscObjectIdentifiers.id_Falcon1024_ECDSA_P521_SHA512);
+        compositeNameASN1IdentifierMap.put(CompositeName.MLDSA87_ECDSA_P521_SHA512, MiscObjectIdentifiers.id_MLDSA87_ECDSA_P521_SHA512);
     }
 
     /**

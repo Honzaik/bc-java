@@ -34,11 +34,14 @@ public class CompositeSignaturesTest extends TestCase {
             "2.16.840.1.114027.80.7.1.14", //id-Falcon512-ECDSA-P256-SHA256
             "2.16.840.1.114027.80.7.1.15", //id-Falcon512-ECDSA-brainpoolP256r1-SHA256
             "2.16.840.1.114027.80.7.1.16", //id-Falcon512-Ed25519-SHA512
+            "2.16.840.1.114027.80.7.1.17",
+            "2.16.840.1.114027.80.7.1.18",
     };
 
     public static final String messageToBeSigned = "Hello, how was your day?";
 
     public void testKeyPairGeneration() throws Exception {
+
         Security.addProvider(new BouncyCastleProvider());
 
         for (String oid : compositeSignaturesOIDs) {
@@ -127,6 +130,18 @@ public class CompositeSignaturesTest extends TestCase {
                 case Falcon512_ECDSA_brainpoolP256r1_SHA256:
                     TestCase.assertEquals("FALCON-512", firstPublicKeyAlgorithm);
                     TestCase.assertEquals("FALCON-512", firstPrivateKeyAlgorithm);
+                    TestCase.assertEquals("ECDSA", secondPublicKeyAlgorithm);
+                    TestCase.assertEquals("ECDSA", secondPrivateKeyAlgorithm);
+                    break;
+                case Falcon1024_ECDSA_P521_SHA512:
+                    TestCase.assertEquals("FALCON-1024", firstPublicKeyAlgorithm);
+                    TestCase.assertEquals("FALCON-1024", firstPrivateKeyAlgorithm);
+                    TestCase.assertEquals("ECDSA", secondPublicKeyAlgorithm);
+                    TestCase.assertEquals("ECDSA", secondPrivateKeyAlgorithm);
+                    break;
+                case MLDSA87_ECDSA_P521_SHA512:
+                    TestCase.assertEquals("DILITHIUM5", firstPublicKeyAlgorithm);
+                    TestCase.assertEquals("DILITHIUM5", firstPrivateKeyAlgorithm);
                     TestCase.assertEquals("ECDSA", secondPublicKeyAlgorithm);
                     TestCase.assertEquals("ECDSA", secondPrivateKeyAlgorithm);
                     break;

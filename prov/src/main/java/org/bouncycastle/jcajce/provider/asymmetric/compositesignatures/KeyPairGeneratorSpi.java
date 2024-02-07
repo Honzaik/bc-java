@@ -147,6 +147,18 @@ public class KeyPairGeneratorSpi extends java.security.KeyPairGeneratorSpi
                     generators.get(0).initialize(FalconParameterSpec.falcon_512, this.secureRandom);
                     generators.get(1).initialize(256, this.secureRandom);
                     break;
+                case Falcon1024_ECDSA_P521_SHA512:
+                    generators.add(KeyPairGenerator.getInstance("Falcon", "BC"));
+                    generators.add(KeyPairGenerator.getInstance("ECDSA", "BC"));
+                    generators.get(0).initialize(FalconParameterSpec.falcon_1024, this.secureRandom);
+                    generators.get(1).initialize(new ECGenParameterSpec("P-521"), this.secureRandom);
+                    break;
+                case MLDSA87_ECDSA_P521_SHA512:
+                    generators.add(KeyPairGenerator.getInstance("Dilithium", "BC"));
+                    generators.add(KeyPairGenerator.getInstance("ECDSA", "BC"));
+                    generators.get(0).initialize(DilithiumParameterSpec.dilithium5, this.secureRandom);
+                    generators.get(1).initialize(new ECGenParameterSpec("P-521"), this.secureRandom);
+                    break;
                 default:
                     throw new IllegalStateException("Generators not correctly initialized. Unsupported composite algorithm.");
             }
@@ -349,6 +361,21 @@ public class KeyPairGeneratorSpi extends java.security.KeyPairGeneratorSpi
         public Falcon512andECDSAbrainpoolP256r1()
         {
             super(CompositeSignaturesConstants.CompositeName.Falcon512_ECDSA_brainpoolP256r1_SHA256);
+        }
+    }
+
+    public static final class Falcon1024andECDSAP521 extends KeyPairGeneratorSpi
+    {
+        public Falcon1024andECDSAP521()
+        {
+            super(CompositeSignaturesConstants.CompositeName.Falcon1024_ECDSA_P521_SHA512);
+        }
+    }
+    public static final class MLDSA87andECDSAP521 extends KeyPairGeneratorSpi
+    {
+        public MLDSA87andECDSAP521()
+        {
+            super(CompositeSignaturesConstants.CompositeName.MLDSA87_ECDSA_P521_SHA512);
         }
     }
 

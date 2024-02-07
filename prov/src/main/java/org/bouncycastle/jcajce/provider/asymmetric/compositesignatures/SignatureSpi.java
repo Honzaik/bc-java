@@ -101,6 +101,16 @@ public class SignatureSpi extends java.security.SignatureSpi
                     componentSignatures.add(Signature.getInstance("Ed25519", "BC"));
                     this.digest = DigestFactory.createSHA512();
                     break;
+                case Falcon1024_ECDSA_P521_SHA512:
+                    componentSignatures.add(Signature.getInstance("Falcon", "BC"));
+                    componentSignatures.add(Signature.getInstance("SHA512withECDSA", "BC"));
+                    this.digest = DigestFactory.createSHA512();
+                    break;
+                case MLDSA87_ECDSA_P521_SHA512:
+                    componentSignatures.add(Signature.getInstance("Dilithium", "BC"));
+                    componentSignatures.add(Signature.getInstance("SHA512withECDSA", "BC"));
+                    this.digest = DigestFactory.createSHA512();
+                    break;
                 default:
                     throw new RuntimeException("Unknown composite algorithm.");
             }
@@ -386,6 +396,20 @@ public class SignatureSpi extends java.security.SignatureSpi
         public Falcon512andECDSAbrainpoolP256r1()
         {
             super(CompositeSignaturesConstants.CompositeName.Falcon512_ECDSA_brainpoolP256r1_SHA256);
+        }
+    }
+    public final static class Falcon1024andECDSAP521 extends SignatureSpi
+    {
+        public Falcon1024andECDSAP521()
+        {
+            super(CompositeSignaturesConstants.CompositeName.Falcon1024_ECDSA_P521_SHA512);
+        }
+    }
+    public final static class MLDSA87andECDSAP521 extends SignatureSpi
+    {
+        public MLDSA87andECDSAP521()
+        {
+            super(CompositeSignaturesConstants.CompositeName.MLDSA87_ECDSA_P521_SHA512);
         }
     }
 }
