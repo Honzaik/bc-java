@@ -91,37 +91,42 @@ public class AsconTest
         testVectorsXof_AsconXof();
         testVectorsXof_AsconXofA();
 
-        CipherTest.checkCipher(32, 16, 100, 128, new CipherTest.Instace()
+        CipherTest.checkAEADParemeter(this, 16,16, 16, 16, new AsconAEAD128());
+        CipherTest.checkAEADParemeter(this, 16,16, 16, 16, new AsconEngine(AsconEngine.AsconParameters.ascon128));
+        CipherTest.checkAEADParemeter(this, 16,16, 16, 16, new AsconEngine(AsconEngine.AsconParameters.ascon128a));
+        CipherTest.checkAEADParemeter(this, 20,16, 16, 16, new AsconEngine(AsconEngine.AsconParameters.ascon80pq));
+
+        CipherTest.checkCipher(32, 16, 100, 128, new CipherTest.Instance()
         {
             @Override
-            public AEADCipher CreateInstace()
+            public AEADCipher createInstance()
             {
                 return new AsconAEAD128();
             }
         });
 
-        CipherTest.checkCipher(32, 16, 100, 128, new CipherTest.Instace()
+        CipherTest.checkCipher(32, 16, 100, 128, new CipherTest.Instance()
         {
             @Override
-            public AEADCipher CreateInstace()
+            public AEADCipher createInstance()
             {
                 return new AsconEngine(AsconEngine.AsconParameters.ascon128);
             }
         });
 
-        CipherTest.checkCipher(32, 16, 100, 128, new CipherTest.Instace()
+        CipherTest.checkCipher(32, 16, 100, 128, new CipherTest.Instance()
         {
             @Override
-            public AEADCipher CreateInstace()
+            public AEADCipher createInstance()
             {
                 return new AsconEngine(AsconEngine.AsconParameters.ascon128a);
             }
         });
 
-        CipherTest.checkCipher(32, 16, 100, 160, new CipherTest.Instace()
+        CipherTest.checkCipher(32, 16, 100, 160, new CipherTest.Instance()
         {
             @Override
-            public AEADCipher CreateInstace()
+            public AEADCipher createInstance()
             {
                 return new AsconEngine(AsconEngine.AsconParameters.ascon80pq);
             }
@@ -135,6 +140,10 @@ public class AsconTest
         DigestTest.checkDigestReset(this, new AsconXof(AsconXof.AsconParameters.AsconXofA));
         DigestTest.checkDigestReset(this, new AsconDigest(AsconDigest.AsconParameters.AsconHash));
         DigestTest.checkDigestReset(this, new AsconDigest(AsconDigest.AsconParameters.AsconHashA));
+        CipherTest.checkAEADCipherMultipleBlocks(this, 1025, 41, 10, 128, 16, new AsconAEAD128());
+        CipherTest.checkAEADCipherMultipleBlocks(this, 1025, 41, 10, 128, 16, new  AsconEngine(AsconEngine.AsconParameters.ascon128));
+        CipherTest.checkAEADCipherMultipleBlocks(this, 1025, 41, 10, 128, 16, new AsconEngine(AsconEngine.AsconParameters.ascon128a));
+        CipherTest.checkAEADCipherMultipleBlocks(this, 1025, 41, 10, 160, 16, new AsconEngine(AsconEngine.AsconParameters.ascon80pq));
     }
 
     public void testBufferingEngine_ascon128()
@@ -1105,7 +1114,7 @@ public class AsconTest
             int a = line.indexOf('=');
             if (a < 0)
             {
-                int count = Integer.parseInt(map.get("Count"));
+                int count = Integer.parseInt((String)map.get("Count"));
 //                if (count != 34)
 //                {
 //                    continue;

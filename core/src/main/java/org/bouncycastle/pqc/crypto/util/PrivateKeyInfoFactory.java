@@ -3,9 +3,11 @@ package org.bouncycastle.pqc.crypto.util;
 import java.io.IOException;
 
 import org.bouncycastle.asn1.ASN1EncodableVector;
+import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
@@ -32,7 +34,6 @@ import org.bouncycastle.pqc.crypto.lms.Composer;
 import org.bouncycastle.pqc.crypto.lms.HSSPrivateKeyParameters;
 import org.bouncycastle.pqc.crypto.lms.LMSPrivateKeyParameters;
 import org.bouncycastle.pqc.crypto.mldsa.MLDSAPrivateKeyParameters;
-import org.bouncycastle.pqc.crypto.mldsa.MLDSAPublicKeyParameters;
 import org.bouncycastle.pqc.crypto.mlkem.MLKEMPrivateKeyParameters;
 import org.bouncycastle.pqc.crypto.newhope.NHPrivateKeyParameters;
 import org.bouncycastle.pqc.crypto.ntru.NTRUPrivateKeyParameters;
@@ -52,6 +53,7 @@ import org.bouncycastle.pqc.crypto.xmss.XMSSUtil;
 import org.bouncycastle.pqc.legacy.crypto.mceliece.McElieceCCA2PrivateKeyParameters;
 import org.bouncycastle.pqc.legacy.crypto.qtesla.QTESLAPrivateKeyParameters;
 import org.bouncycastle.util.Pack;
+import org.bouncycastle.util.Properties;
 
 /**
  * Factory to create ASN.1 private key info objects from lightweight private keys.
@@ -248,14 +250,15 @@ public class PrivateKeyInfoFactory
             AlgorithmIdentifier algorithmIdentifier = new AlgorithmIdentifier(Utils.mlkemOidLookup(params.getParameters()));
 
             byte[] seed = params.getSeed();
-            if (seed == null)
+            if (Properties.isOverrideSet("org.bouncycastle.mlkem.seedOnly"))
             {
-                return new PrivateKeyInfo(algorithmIdentifier, params.getEncoded(), attributes);
-            }
-            else
-            {
+                if (seed == null)    // very difficult to imagine, but...
+                {
+                    throw new IOException("no seed available");
+                }
                 return new PrivateKeyInfo(algorithmIdentifier, seed, attributes);
             }
+            return new PrivateKeyInfo(algorithmIdentifier, getBasicPQCEncoding(seed, params.getEncoded()), attributes);
         }
         else if (privateKey instanceof NTRULPRimePrivateKeyParameters)
         {
@@ -295,18 +298,15 @@ public class PrivateKeyInfoFactory
             AlgorithmIdentifier algorithmIdentifier = new AlgorithmIdentifier(Utils.mldsaOidLookup(params.getParameters()));
 
             byte[] seed = params.getSeed();
-            if (seed == null)
+            if (Properties.isOverrideSet("org.bouncycastle.mldsa.seedOnly"))
             {
-                MLDSAPublicKeyParameters pubParams = params.getPublicKeyParameters();
-
-                return new PrivateKeyInfo(algorithmIdentifier, params.getEncoded(), attributes, pubParams.getEncoded());
+                if (seed == null)    // very difficult to imagine, but...
+                {
+                    throw new IOException("no seed available");
+                }
+                return new PrivateKeyInfo(algorithmIdentifier, seed, attributes);
             }
-            else
-            {
-                MLDSAPublicKeyParameters pubParams = params.getPublicKeyParameters();
-
-                return new PrivateKeyInfo(algorithmIdentifier, params.getSeed(), attributes);
-            }
+            return new PrivateKeyInfo(algorithmIdentifier, getBasicPQCEncoding(params.getSeed(), params.getEncoded()), attributes);
         }
         else if (privateKey instanceof DilithiumPrivateKeyParameters)
         {
@@ -393,6 +393,23 @@ public class PrivateKeyInfoFactory
         {
             return new XMSSPrivateKey(index, secretKeySeed, secretKeyPRF, publicSeed, root, bdsStateBinary);
         }
+    }
+
+    private static ASN1Sequence getBasicPQCEncoding(byte[] seed, byte[] expanded)
+    {
+        ASN1EncodableVector v = new ASN1EncodableVector(2);
+        
+        if (seed != null)
+        {
+            v.add(new DEROctetString(seed));
+        }
+
+        if (expanded != null)
+        {
+            v.add(new DERTaggedObject(false, 1, new DEROctetString(expanded)));
+        }
+
+        return new DERSequence(v);
     }
 
     private static XMSSMTPrivateKey xmssmtCreateKeyStructure(XMSSMTPrivateKeyParameters keyParams)

@@ -44,6 +44,7 @@ public class BCMLDSAPrivateKey
     private void init(PrivateKeyInfo keyInfo)
             throws IOException
     {
+        this.encoding = keyInfo.getEncoded();
         init((MLDSAPrivateKeyParameters)PrivateKeyFactory.createKey(keyInfo), keyInfo.getAttributes());
     }
 
@@ -51,7 +52,7 @@ public class BCMLDSAPrivateKey
     {
         this.attributes = attributes;
         this.params = params;
-        algorithm = MLDSAParameterSpec.fromName(params.getParameters().getName()).getName().toUpperCase();
+        algorithm = Strings.toUpperCase(MLDSAParameterSpec.fromName(params.getParameters().getName()).getName());
     }
 
     /**

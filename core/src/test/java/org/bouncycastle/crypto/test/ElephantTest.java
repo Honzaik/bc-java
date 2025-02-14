@@ -10,7 +10,6 @@ import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.engines.ElephantEngine;
 import org.bouncycastle.crypto.modes.AEADCipher;
-import org.bouncycastle.crypto.params.AEADParameters;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.test.TestResourceFinder;
@@ -28,33 +27,36 @@ public class ElephantTest
     public void performTest()
         throws Exception
     {
-        CipherTest.checkAEADCipherOutputSize(16, 12, 20, 8, new ElephantEngine(ElephantEngine.ElephantParameters.elephant160));
-        CipherTest.checkAEADCipherOutputSize(16, 12, 22, 8, new ElephantEngine(ElephantEngine.ElephantParameters.elephant176));
-        CipherTest.checkAEADCipherOutputSize(16, 12, 25, 16, new ElephantEngine(ElephantEngine.ElephantParameters.elephant200));
+        CipherTest.checkAEADCipherMultipleBlocks(this, 1025, 41, 10, 128, 12, new ElephantEngine(ElephantEngine.ElephantParameters.elephant160));
+        CipherTest.checkAEADCipherMultipleBlocks(this, 1025, 41, 10, 128, 12, new ElephantEngine(ElephantEngine.ElephantParameters.elephant176));
+        CipherTest.checkAEADCipherMultipleBlocks(this, 1025, 41, 10, 128, 12, new ElephantEngine(ElephantEngine.ElephantParameters.elephant200));
+        CipherTest.checkAEADParemeter(this, 16, 12, 8, 20, new ElephantEngine(ElephantEngine.ElephantParameters.elephant160));
+        CipherTest.checkAEADParemeter(this, 16, 12, 8, 22, new ElephantEngine(ElephantEngine.ElephantParameters.elephant176));
+        CipherTest.checkAEADParemeter(this, 16, 12, 16, 25, new ElephantEngine(ElephantEngine.ElephantParameters.elephant200));
+        CipherTest.checkAEADCipherOutputSize(this, 16, 12, 20, 8, new ElephantEngine(ElephantEngine.ElephantParameters.elephant160));
+        CipherTest.checkAEADCipherOutputSize(this, 16, 12, 22, 8, new ElephantEngine(ElephantEngine.ElephantParameters.elephant176));
+        CipherTest.checkAEADCipherOutputSize(this, 16, 12, 25, 16, new ElephantEngine(ElephantEngine.ElephantParameters.elephant200));
 //        //testVectors(ElephantEngine.ElephantParameters.elephant160, "v160_2");
         ElephantEngine elephant = new ElephantEngine(ElephantEngine.ElephantParameters.elephant200);
         testExceptions(elephant, elephant.getKeyBytesSize(), elephant.getIVBytesSize(), elephant.getBlockSize());
         testParameters(elephant, 16, 12, 16);
-        CipherTest.checkCipher(10, 12, 40, 128, new CipherTest.Instace()
+        CipherTest.checkCipher(10, 12, 40, 128, new CipherTest.Instance()
         {
-            @Override
-            public AEADCipher CreateInstace()
+            public AEADCipher createInstance()
             {
                 return new ElephantEngine(ElephantEngine.ElephantParameters.elephant160);
             }
         });
-        CipherTest.checkCipher(10, 12, 40, 128, new CipherTest.Instace()
+        CipherTest.checkCipher(10, 12, 40, 128, new CipherTest.Instance()
         {
-            @Override
-            public AEADCipher CreateInstace()
+            public AEADCipher createInstance()
             {
                 return new ElephantEngine(ElephantEngine.ElephantParameters.elephant176);
             }
         });
-        CipherTest.checkCipher(10, 12, 40, 128, new CipherTest.Instace()
+        CipherTest.checkCipher(10, 12, 40, 128, new CipherTest.Instance()
         {
-            @Override
-            public AEADCipher CreateInstace()
+            public AEADCipher createInstance()
             {
                 return new ElephantEngine(ElephantEngine.ElephantParameters.elephant200);
             }
@@ -219,16 +221,6 @@ public class ElephantTest
         {
             aeadBlockCipher.init(true, new ParametersWithIV(new KeyParameter(k), iv1));
             fail(aeadBlockCipher.getAlgorithmName() + "iv size does not match");
-        }
-        catch (IllegalArgumentException e)
-        {
-            //expected
-        }
-
-        try
-        {
-            aeadBlockCipher.init(true, new AEADParameters(new KeyParameter(k), 0, iv));
-            fail(aeadBlockCipher.getAlgorithmName() + " wrong type of CipherParameters");
         }
         catch (IllegalArgumentException e)
         {
