@@ -248,7 +248,12 @@ public class DefaultCMSSignatureAlgorithmNameGenerator
         addSimpleAlg(NISTObjectIdentifiers.id_hash_slh_dsa_shake_256f_with_shake256, "SLH-DSA-SHAKE-256F-WITH-SHAKE256");
 
         addSimpleAlg(MiscObjectIdentifiers.id_MLDSA44_ECDSA_P256_SHA256, "MLDSA44-ECDSA-P256-SHA256");
+        addSimpleAlg(MiscObjectIdentifiers.id_MLDSA65_ECDSA_P384_SHA384, "MLDSA65-ECDSA-P384-SHA384");
         addSimpleAlg(MiscObjectIdentifiers.id_MLDSA87_ECDSA_P384_SHA384, "MLDSA87-ECDSA-P384-SHA384");
+
+        addSimpleAlg(MiscObjectIdentifiers.id_HashMLDSA44_ECDSA_P256_SHA256, "HashMLDSA44-ECDSA-P256-SHA256");
+        addSimpleAlg(MiscObjectIdentifiers.id_HashMLDSA65_ECDSA_P384_SHA512, "HashMLDSA65-ECDSA-P384-SHA512");
+        addSimpleAlg(MiscObjectIdentifiers.id_HashMLDSA87_ECDSA_P384_SHA512, "HashMLDSA87-ECDSA-P384-SHA512");
 
         addSimpleAlg(BCObjectIdentifiers.picnic_signature, "Picnic");
     }

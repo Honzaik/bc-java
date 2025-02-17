@@ -20,6 +20,7 @@ import java.util.Map;
 import org.bouncycastle.asn1.ASN1BitString;
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
+import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Sequence;
@@ -73,7 +74,8 @@ public class KeyFactorySpi
 
     private static Map<ASN1ObjectIdentifier, AlgorithmIdentifier[]> pairings = new HashMap<ASN1ObjectIdentifier, AlgorithmIdentifier[]>();
     private static Map<ASN1ObjectIdentifier, int[]> componentKeySizes = new HashMap<ASN1ObjectIdentifier, int[]>();
-    
+    private static Map<ASN1ObjectIdentifier, int[]> componentPrivKeySizes = new HashMap<ASN1ObjectIdentifier, int[]>();
+
     static
     {
         pairings.put(MiscObjectIdentifiers.id_MLDSA44_RSA2048_PSS_SHA256, new AlgorithmIdentifier[]{mlDsa44, rsa});
@@ -135,6 +137,10 @@ public class KeyFactorySpi
         componentKeySizes.put(MiscObjectIdentifiers.id_HashMLDSA87_ECDSA_P384_SHA512, new int[]{2592, 87});
         componentKeySizes.put(MiscObjectIdentifiers.id_HashMLDSA87_ECDSA_brainpoolP384r1_SHA512, new int[]{2592, 87});
         componentKeySizes.put(MiscObjectIdentifiers.id_HashMLDSA87_Ed448_SHA512, new int[] { 2592, Ed448.PUBLIC_KEY_SIZE});
+
+        componentPrivKeySizes.put(MiscObjectIdentifiers.id_HashMLDSA44_ECDSA_P256_SHA256, new int[]{2602, 121});
+        componentPrivKeySizes.put(MiscObjectIdentifiers.id_HashMLDSA65_ECDSA_P384_SHA512, new int[]{4074, 167});
+        componentPrivKeySizes.put(MiscObjectIdentifiers.id_HashMLDSA87_ECDSA_P384_SHA512, new int[]{4938, 167});
     }
 
     private JcaJceHelper helper;
@@ -243,8 +249,13 @@ public class KeyFactorySpi
                 ASN1EncodableVector v = new ASN1EncodableVector();
                 byte[] data = keyInfo.getPrivateKey().getOctets();
 
-                v.add(new DEROctetString(Arrays.copyOfRange(data, 0, 32)));
-                v.add(new DEROctetString(Arrays.copyOfRange(data, 32, data.length)));
+                if (keyIdentifier.equals(MiscObjectIdentifiers.id_HashMLDSA44_ECDSA_P256_SHA256) || keyIdentifier.equals(MiscObjectIdentifiers.id_HashMLDSA65_ECDSA_P384_SHA512) || keyIdentifier.equals(MiscObjectIdentifiers.id_HashMLDSA87_ECDSA_P384_SHA512)) {
+                    v.add(new DEROctetString(Arrays.copyOfRange(data, 0, componentPrivKeySizes.get(keyIdentifier)[0])));
+                    v.add(new DEROctetString(Arrays.copyOfRange(data, componentPrivKeySizes.get(keyIdentifier)[0], data.length)));
+                } else {
+                    v.add(new DEROctetString(Arrays.copyOfRange(data, 0, 32)));
+                    v.add(new DEROctetString(Arrays.copyOfRange(data, 32, data.length)));
+                }
 
                 seq = new DERSequence(v);
             }

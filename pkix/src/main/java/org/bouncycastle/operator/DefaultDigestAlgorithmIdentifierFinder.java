@@ -169,10 +169,9 @@ public class DefaultDigestAlgorithmIdentifierFinder
         digestOids.put(NISTObjectIdentifiers.id_hash_ml_dsa_65_with_sha512, NISTObjectIdentifiers.id_sha512);
         digestOids.put(NISTObjectIdentifiers.id_hash_ml_dsa_87_with_sha512, NISTObjectIdentifiers.id_sha512);
 
-        //technically these are non-pre-hash composites so MLDSA hashes with SHAKE and ECDSA with SHAxxx
-        //but for experimental we use this, more correct would be to define this only for prehash composites
-        digestOids.put(MiscObjectIdentifiers.id_MLDSA44_ECDSA_P256_SHA256, NISTObjectIdentifiers.id_sha256);
-        digestOids.put(MiscObjectIdentifiers.id_MLDSA87_ECDSA_P384_SHA384, NISTObjectIdentifiers.id_sha384);
+        digestOids.put(MiscObjectIdentifiers.id_HashMLDSA44_ECDSA_P256_SHA256, NISTObjectIdentifiers.id_sha256);
+        digestOids.put(MiscObjectIdentifiers.id_HashMLDSA65_ECDSA_P384_SHA512, NISTObjectIdentifiers.id_sha512);
+        digestOids.put(MiscObjectIdentifiers.id_HashMLDSA87_ECDSA_P384_SHA512, NISTObjectIdentifiers.id_sha512);
 
         digestOids.put(BCObjectIdentifiers.falcon, NISTObjectIdentifiers.id_shake256);
         digestOids.put(BCObjectIdentifiers.falcon_512, NISTObjectIdentifiers.id_shake256);
